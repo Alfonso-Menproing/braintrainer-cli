@@ -33,7 +33,9 @@ class LineReader:
         if settings.CHOOSE:
             uicurses.addstr("Elija BPM: ")
             self.BPM = int(uicurses.getstr())
-            self.words = 3
+            uicurses.addstr("Elija words: ")
+            self.words = int(uicurses.getstr()) 
+            self.uicurses.clear()
         else:
             self.BPM = int(settings.get_prop("BPM"))
             self.words = 3
@@ -63,6 +65,7 @@ class SecuencialReader:
             self.BPM = int(uicurses.getstr())
             uicurses.addstr("Elija words:")
             self.words = int(uicurses.getstr())
+            self.uicurses.clear()
         else:
             self.BPM = int(settings.get_prop("BPM"))
             self.words = 3
