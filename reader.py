@@ -40,7 +40,10 @@ class LineReader:
 
     def run(self):
         uicurses = self.uicurses
-        selectedtext = settings.PROGRAM_DIR + "/example_text/%02d.txt" % (random.randint(0, 300))  
+        if settings.PROGRAM_DIR=="":
+            selectedtext="example_text/%02d.txt" % (random.randint(0, 300))  
+        else:
+            selectedtext = settings.PROGRAM_DIR + "/example_text/%02d.txt" % (random.randint(0, 300))  
         uicurses.addstr("BPM: " + str(self.BPM))
         uicurses.addstr("words: " + str(self.words))
         with open(selectedtext, "r") as fhandle:
@@ -66,7 +69,10 @@ class SecuencialReader:
 
     def run(self):
         uicurses = self.uicurses
-        selectedtext = settings.PROGRAM_DIR + "/example_text/%02d.txt" % (random.randint(0, 300))  
+        if settings.PROGRAM_DIR=="":
+            selectedtext="example_text/%02d.txt" % (random.randint(0, 300))  
+        else:
+            selectedtext = settings.PROGRAM_DIR + "/example_text/%02d.txt" % (random.randint(0, 300))  
         uicurses.addstr("BPM: " + str(self.BPM))
         uicurses.addstr("words: " + str(self.words))
         with open(selectedtext, "r") as fhandle:
