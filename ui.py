@@ -79,6 +79,7 @@ class UICurses:
         return res
 
     def select(self, cat, child=0, y=None,x=0,defaultfocus=0, orientation=HORIZONTAL):
+        self.win.nodelay(0)
         newline=True
         if y is None:
             y=self.lines[child]
@@ -102,6 +103,7 @@ class UICurses:
                 if self.is_key_enter():
                     if newline:
                         self.lines[child] += nextline
+                    self.win.nodelay(1)
                     return focus
 
                 elif chr(c)=='l' or self.is_key_right():
