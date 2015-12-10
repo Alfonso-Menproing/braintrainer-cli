@@ -5,9 +5,9 @@ import time
 timedict = {}
 timedict["default"]=time.time()
 def tick(key="default"):
-    timedict[key]=time.time()
+    timedict[key]=int(time.time()*1000)
 def tock(key="default"):
-    return time.time()-timedict[key]
+    return int(time.time()*1000)-timedict[key]
 def get_week():
     return time.localtime().tm_wday
 def get_ymd():

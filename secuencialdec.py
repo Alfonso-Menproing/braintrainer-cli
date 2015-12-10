@@ -5,27 +5,23 @@ import time
 import timemanager
 from utils import *
 import settings
+import exercise
 
-class SecuencialDec:
-    def __init__(self, uicurses):
-        self.uicurses = uicurses
-        settings.load_props()
-        if settings.CHOOSE:
-            uicurses.addstr("Elija BPM: ")
-            self.BPM=int(uicurses.getstr())
-            uicurses.addstr("Elija duration: ")
-            self.duration=int(uicurses.getstr())
-            uicurses.clear()
-        else:
-            self.BPM = int(settings.get_prop("BPM"))
-            self.duration = int(settings.get_prop("duration"))
-
+class SecuencialDec(exercise.Exercise):
     def run(self):
         uicurses = self.uicurses
         timemanager.tick()
-        uicurses.addstr("BPM: " + str(self.BPM))
-        uicurses.addstr("duration: " + str(self.duration))
-        while timemanager.tock() < self.duration:
-            uicurses.addstrcenter(get_digits(),0,-5,-10)
+        uicurses.add_str("BPM: " + str(self.BPM))
+        uicurses.add_str("duration: " + str(self.duration))
+        while timemanager.tock() < self.duration*1000:
+            uicurses.add_str_center(get_digits(),-5,-10)
             time.sleep(60.0 / self.BPM - 0.001)
-        settings.check()
+        settings.send_data({"action" : "check"})
+
+def main():
+    ex=SecuencialDec()
+    ex.run()
+    ex.uicurses.quit()
+
+if __name__ == "__main__":
+    main()

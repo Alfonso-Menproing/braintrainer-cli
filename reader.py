@@ -4,6 +4,9 @@
 import time
 import random
 import settings
+import exercise
+import locale
+import subprocess
 WORD_MEAN_SIZE = 4
 MAXLINESIZE = 30
 
@@ -15,9 +18,9 @@ def sliceText(text, words):
         while index < len(text) and text[index] != " " and text[index] != "\n":
             index += 1
         if index >= len(text):
-            yield text[lastindex:]
+            yield text[lastindex:].replace("\n"," \\")
         else:
-            yield text[lastindex:index + 1].replace("\n", "-")
+            yield text[lastindex:index + 1].replace("\n", " \\")
         lastindex = index + 1
 
 def sequenceText(slicedtext, bpm):
@@ -25,62 +28,57 @@ def sequenceText(slicedtext, bpm):
         yield text
         time.sleep(60.0/bpm - 0.001)
 
-class LineReader:
-    def __init__(self,uicurses):
-        self.uicurses = uicurses
-        uicurses.clear()
-        settings.load_props()
-        if settings.CHOOSE:
-            uicurses.addstr("Elija BPM: ")
-            self.BPM = int(uicurses.getstr())
-            uicurses.addstr("Elija words: ")
-            self.words = int(uicurses.getstr()) 
-            self.uicurses.clear()
+class LineReader(exercise.Exercise):
+    def run(self):
+        uicurses = self.uicurses
+        selectedtext = self.text
+        if self.text=="random":
+            if settings.PROGRAM_DIR=="":
+                selectedtext="example_text/%02d.txt" % (random.randint(0, 300))  
+            else:
+                selectedtext = settings.PROGRAM_DIR + "/example_text/%02d.txt" % (random.randint(0, 300))  
+            with open(selectedtext, "rb") as fhandle:
+                self.data = fhandle.read()
+                self.data = self.data.decode("latin_1").encode("utf-8")
+        elif self.text=="clipboard":
+            self.data=subprocess.check_output(["/usr/bin/xsel" ,"-o", "-b"]) 
         else:
-            self.BPM = int(settings.get_prop("BPM"))
-            self.words = 3
+            with open(selectedtext, "rb") as fhandle:
+                self.data = fhandle.read()
+        if "encoding" in self:
+            if self.encoding == "latin_1":
+                self.data = self.data.decode("latin_1").encode("utf-8")
+        else:
+            self.encoding=locale.getpreferredencoding()
 
+        uicurses.add_str("BPM: " + str(self.BPM))
+        uicurses.add_str("words: " + str(self.words))
+        uicurses.add_str("text: " + str(selectedtext))
+        uicurses.add_str("encoding: " + str(self.encoding))
+        for text in sequenceText(sliceText(self.data, self.words), self.BPM):
+            uicurses.add_str_center(text,-5,-10, True)
+
+class SecuencialReader(exercise.Exercise):
     def run(self):
         uicurses = self.uicurses
         if settings.PROGRAM_DIR=="":
             selectedtext="example_text/%02d.txt" % (random.randint(0, 300))  
         else:
             selectedtext = settings.PROGRAM_DIR + "/example_text/%02d.txt" % (random.randint(0, 300))  
-        uicurses.addstr("BPM: " + str(self.BPM))
-        uicurses.addstr("words: " + str(self.words))
+        uicurses.add_str("BPM: " + str(self.BPM))
+        uicurses.add_str("words: " + str(self.words))
+        uicurses.add_str("file: " + str(selectedtext))
+        uicurses.add_str("encoding: " + str(locale.getpreferredencoding()))
         with open(selectedtext, "r") as fhandle:
             data = fhandle.read()
+            data = data.decode("latin_1").encode("utf-8")
         for text in sequenceText(sliceText(data, self.words), self.BPM):
-            if len(text) < MAXLINESIZE:
-                text=text+" "*(MAXLINESIZE-len(text))
-            uicurses.addstr(text,0,5,5,False)
+            uicurses.add_str(text, None, 5, True)
 
-class SecuencialReader:
-    def __init__(self,uicurses):
-        self.uicurses = uicurses
-        uicurses.clear()
-        settings.load_props()
-        if settings.CHOOSE:
-            uicurses.addstr("Elija BPM: ")
-            self.BPM = int(uicurses.getstr())
-            uicurses.addstr("Elija words:")
-            self.words = int(uicurses.getstr())
-            self.uicurses.clear()
-        else:
-            self.BPM = int(settings.get_prop("BPM"))
-            self.words = 3
+def main():
+    sr = LineReader()
+    sr.run()
+    sr.quit()
 
-    def run(self):
-        uicurses = self.uicurses
-        if settings.PROGRAM_DIR=="":
-            selectedtext="example_text/%02d.txt" % (random.randint(0, 300))  
-        else:
-            selectedtext = settings.PROGRAM_DIR + "/example_text/%02d.txt" % (random.randint(0, 300))  
-        uicurses.addstr("BPM: " + str(self.BPM))
-        uicurses.addstr("words: " + str(self.words))
-        with open(selectedtext, "r") as fhandle:
-            data = fhandle.read()
-        for text in sequenceText(sliceText(data, self.words), self.BPM):
-            if len(text) < MAXLINESIZE:
-                text=text+" "*(len(text)-MAXLINESIZE)
-            uicurses.addstr(text)
+if __name__ == "__main__":
+    main()
