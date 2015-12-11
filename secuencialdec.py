@@ -8,6 +8,9 @@ import settings
 import exercise
 
 class SecuencialDec(exercise.Exercise):
+    def __init__(self, uicurses=None, dic_data=None):
+        self.required=["duration", "BPM"]
+        exercise.Exercise.__init__(self, uicurses, dic_data)
     def run(self):
         uicurses = self.uicurses
         timemanager.tick()

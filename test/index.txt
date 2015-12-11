@@ -1,3 +1,0 @@
-hola;hello;hallo
-adios;bye;auf wiedersehen
-buenos dias;good morning;guten morgen

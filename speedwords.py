@@ -6,6 +6,10 @@ import time
 import math
 from timemanager import *
 class SpeedWords(exercise.Exercise):
+    def __init__(self, uicurses=None, dic_data=None):
+        self.required = ["maze", "count", "field", "timeout"] 
+        exercise.Exercise.__init__(self, uicurses, dic_data)
+
     def run(self):
         uicurses = self.uicurses
         self.maze_data = self.decode_maze(self.maze)

@@ -29,6 +29,9 @@ def sequenceText(slicedtext, bpm):
         time.sleep(60.0/bpm - 0.001)
 
 class LineReader(exercise.Exercise):
+    def __init__(self, uicurses=None, dic_data=None):
+        self.required = ["text", "BPM", "words"] 
+        exercise.Exercise.__init__(self, uicurses, dic_data)
     def run(self):
         uicurses = self.uicurses
         selectedtext = self.text
@@ -59,12 +62,30 @@ class LineReader(exercise.Exercise):
             uicurses.add_str_center(text,-5,-10, True)
 
 class SecuencialReader(exercise.Exercise):
+    def __init__(self, uicurses=None, dic_data=None):
+        self.required = ["text", "BPM", "words"] 
+        exercise.Exercise.__init__(self, uicurses, dic_data)
     def run(self):
         uicurses = self.uicurses
-        if settings.PROGRAM_DIR=="":
-            selectedtext="example_text/%02d.txt" % (random.randint(0, 300))  
+        selectedtext = self.text
+        if self.text=="random":
+            if settings.PROGRAM_DIR=="":
+                selectedtext="example_text/%02d.txt" % (random.randint(0, 300))  
+            else:
+                selectedtext = settings.PROGRAM_DIR + "/example_text/%02d.txt" % (random.randint(0, 300))  
+            with open(selectedtext, "rb") as fhandle:
+                self.data = fhandle.read()
+                self.data = self.data.decode("latin_1").encode("utf-8")
+        elif self.text=="clipboard":
+            self.data=subprocess.check_output(["/usr/bin/xsel" ,"-o", "-b"]) 
         else:
-            selectedtext = settings.PROGRAM_DIR + "/example_text/%02d.txt" % (random.randint(0, 300))  
+            with open(selectedtext, "rb") as fhandle:
+                self.data = fhandle.read()
+        if "encoding" in self:
+            if self.encoding == "latin_1":
+                self.data = self.data.decode("latin_1").encode("utf-8")
+        else:
+            self.encoding=locale.getpreferredencoding()
         uicurses.add_str("BPM: " + str(self.BPM))
         uicurses.add_str("words: " + str(self.words))
         uicurses.add_str("file: " + str(selectedtext))

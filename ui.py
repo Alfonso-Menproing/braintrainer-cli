@@ -38,9 +38,9 @@ class UICurses:
             y=self.line
         if y<0:
             y=0
-        if y>=self.ymax:
+        if y>=(self.ymax-1):
             self.clear()
-            y=self.line
+            y=0
         if blank:
             remaining = self.xmax - len(string)
             if remaining > 0:
@@ -178,6 +178,10 @@ class UICurses:
         curses.echo()
         curses.nocbreak()
         curses.endwin()
+    
+    def add_dict(self, data):
+        for key in data:
+            self.add_str(str(key) + ": " + str(data[key]))
 
 def main():
     uicurses=UICurses()
