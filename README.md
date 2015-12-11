@@ -1,12 +1,11 @@
 There is much to be done yet,
 but it has:
 
--Binary Sequences exercise
--Decimal Sequences exercise
--Column Reading
--Line Reading 
--Speed Words
-some texts as example reading
+* Binary Sequences exercise
+* Decimal Sequences exercise
+* Column Reading
+* Line Reading 
+* Speed Words (with some texts as example reading)
 
 Example use:
 
@@ -57,5 +56,5 @@ python2 trainer.py
 
 THINGS I WANT TO DO:
 
--Defining a way to send results to a server 
--Include more exercises (even for mental calculation)
+- Defining a way to send results to a server 
+- Include more exercises (even for mental calculation)
