@@ -23,10 +23,10 @@ def sliceText(text, words):
             yield text[lastindex:index + 1].replace("\n", " \\")
         lastindex = index + 1
 
-def sequenceText(slicedtext, bpm):
+def sequenceText(slicedtext, bpm, uicurses):
     for text in slicedtext:
         yield text
-        time.sleep(60.0/bpm - 0.001)
+        uicurses.wait_any_key(int((60.0/bpm - 0.001)*1000))
 
 class LineReader(Exercise):
     def __init__(self, uicurses=None, dic_data=None):
@@ -58,7 +58,7 @@ class LineReader(Exercise):
         uicurses.add_str("words: " + str(self.words))
         uicurses.add_str("text: " + str(selectedtext))
         uicurses.add_str("encoding: " + str(self.encoding))
-        for text in sequenceText(sliceText(self.data, self.words), self.BPM):
+        for text in sequenceText(sliceText(self.data, self.words), self.BPM, uicurses):
             uicurses.add_str_center(text,-5,-10, True)
 
 class SecuencialReader(Exercise):
@@ -93,7 +93,7 @@ class SecuencialReader(Exercise):
         with open(selectedtext, "r") as fhandle:
             data = fhandle.read()
             data = data.decode("latin_1").encode("utf-8")
-        for text in sequenceText(sliceText(data, self.words), self.BPM):
+        for text in sequenceText(sliceText(data, self.words), self.BPM, uicurses):
             uicurses.add_str(text, None, 5, True)
 
 def main():
