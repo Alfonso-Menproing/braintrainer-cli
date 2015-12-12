@@ -8,6 +8,7 @@ import settings
 from exercise import Exercise
 import locale
 import subprocess
+import os
 WORD_MEAN_SIZE = 4
 MAXLINESIZE = 30
 
@@ -53,8 +54,13 @@ class LineReader(Exercise):
         elif self.text=="clipboard":
             self.data=subprocess.check_output(["/usr/bin/xsel" ,"-o", "-b"]) 
         else:
-            with open(selectedtext, "rb") as fhandle:
-                self.data = fhandle.read()
+            if os.access(selectedtext, os.R_OK):
+                with open(selectedtext, "rb") as fhandle:
+                    self.data = fhandle.read()
+            else:
+                uicurses.add_str("Not text found")
+                uicurses.wait_any_key(None)
+                self.quit()
         if "encoding" in self:
             if self.encoding == "latin_1":
                 self.data = self.data.decode("latin_1").encode("utf-8")

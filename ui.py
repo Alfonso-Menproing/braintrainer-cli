@@ -10,7 +10,7 @@ VERTICAL=1
 class UICurses:
     def __init__(self):
         self.win = curses.initscr()
-        curses.start_color()
+#        curses.start_color()
         curses.noecho()
         curses.cbreak()
         curses.curs_set(0)
