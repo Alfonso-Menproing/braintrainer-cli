@@ -4,7 +4,6 @@ import ui
 import settings
 from utils import *
 import sys
-import table
 class Exercise(ObjDict):
     def __init__(self, uicurses=None, dic_data=None):
         if uicurses == None:

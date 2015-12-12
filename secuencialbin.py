@@ -6,11 +6,11 @@ import time
 import timemanager
 from utils import *
 import settings
-import exercise
-class SecuencialBin(exercise.Exercise):
+from exercise import Exercise
+class SecuencialBin(Exercise):
     def __init__(self, uicurses=None, dic_data=None):
         self.required = ["BPM", "duration"]
-        exercise.Exercise.__init__(self, uicurses, dic_data)
+        Exercise.__init__(self, uicurses, dic_data)
     def run(self):
         uicurses = self.uicurses
         uicurses.add_str("BPM: " + str(self.BPM))

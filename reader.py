@@ -4,7 +4,7 @@
 import time
 import random
 import settings
-import exercise
+from exercise import Exercise
 import locale
 import subprocess
 WORD_MEAN_SIZE = 4
@@ -28,10 +28,10 @@ def sequenceText(slicedtext, bpm):
         yield text
         time.sleep(60.0/bpm - 0.001)
 
-class LineReader(exercise.Exercise):
+class LineReader(Exercise):
     def __init__(self, uicurses=None, dic_data=None):
         self.required = ["text", "BPM", "words"] 
-        exercise.Exercise.__init__(self, uicurses, dic_data)
+        Exercise.__init__(self, uicurses, dic_data)
     def run(self):
         uicurses = self.uicurses
         selectedtext = self.text
@@ -61,10 +61,10 @@ class LineReader(exercise.Exercise):
         for text in sequenceText(sliceText(self.data, self.words), self.BPM):
             uicurses.add_str_center(text,-5,-10, True)
 
-class SecuencialReader(exercise.Exercise):
+class SecuencialReader(Exercise):
     def __init__(self, uicurses=None, dic_data=None):
         self.required = ["text", "BPM", "words"] 
-        exercise.Exercise.__init__(self, uicurses, dic_data)
+        Exercise.__init__(self, uicurses, dic_data)
     def run(self):
         uicurses = self.uicurses
         selectedtext = self.text
