@@ -3,6 +3,7 @@
 
 import time
 import random
+import sys
 import settings
 from exercise import Exercise
 import locale
@@ -26,7 +27,13 @@ def sliceText(text, words):
 def sequenceText(slicedtext, bpm, uicurses):
     for text in slicedtext:
         yield text
-        uicurses.wait_any_key(int((60.0/bpm - 0.001)*1000))
+        timeout, key = uicurses.wait_any_key(int((60.0/bpm - 0.001)*1000))
+        if key is not None:
+            if key==" ":
+                uicurses.wait_any_key(None)
+            elif key=="q":
+                uicurses.quit()
+                sys.exit(0)
 
 class LineReader(Exercise):
     def __init__(self, uicurses=None, dic_data=None):
