@@ -19,6 +19,13 @@ def get_digits(n=2, max_digit=9):
         res.append(random.randint(0,max_digit))
     return "".join(map(str, res))
 
+def get_hex(n=2):
+    digits=["0","1","2","3","4","5","6","7", "8", "9", "A", "B", "C", "D", "E", "F"]
+    res = []
+    for _ in range(n):
+        res.append(digits[random.randint(0,15)])
+    return "".join(res)
+
 def parse_argv():
     result = {}
     for item in sys.argv[1:]:
