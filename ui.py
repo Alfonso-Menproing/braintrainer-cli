@@ -26,8 +26,8 @@ class UICurses:
     def add_str(self, string, y=None,x=0, blank=False):
         if y is None:
             y=self.line
-        for chunk in split_string(string, self.xmax - x):
-            self._add_str(chunk, y, x, blank)
+        for i, chunk in enumerate(split_string(string, self.xmax - x)):
+            self._add_str(chunk, y+i, x, blank)
 
     def _add_str(self, string, y=None,x=0, blank=False):
         if x < 0:
