@@ -1,5 +1,6 @@
 import secuencialbin
 import secuencialdec
+import secuencialhex
 import reader
 import speedwords
 exercises_list = {
@@ -7,12 +8,14 @@ exercises_list = {
         "Decimales Secuenciales" : secuencialdec.SecuencialDec, 
         "Column Reader" : reader.SecuencialReader,
         "Line Reader" : reader.LineReader,
-        "Speed Words" : speedwords.SpeedWords
+        "Speed Words" : speedwords.SpeedWords,
+        "Hexadecimales Secuenciales" : secuencialhex.SecuencialDec
         }
 default_config = {
         "Binarios Secuenciales" : {"BPM" : 160, "duration" : 10},
         "Decimales Secuenciales" : {"BPM" : 180, "duration" : 10}, 
         "Column Reader" : {"text" : "random", "BPM" : 250, "words" : 3},
         "Line Reader" : {"text" : "random", "BPM" : 250, "words" : 3},
-        "Speed Words" : {"count" : 20, "timeout" : 800, "maze" : "palabras", "field" : 0}
+        "Speed Words" : {"count" : 20, "timeout" : 800, "maze" : "palabras", "field" : 0},
+        "Hexadecimales Secuenciales" : {"BPM" : 100, "duration" : 10 }
         }

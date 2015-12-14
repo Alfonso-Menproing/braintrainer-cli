@@ -3,6 +3,20 @@
 import random
 import sys
 
+def slice_text(text, words):
+    WORD_MEAN_SIZE = 4
+    lastindex = 0
+    index = 0
+    while index < len(text):    
+        index = lastindex + (WORD_MEAN_SIZE + 1) * words
+        while index < len(text) and text[index] != " " and text[index] != "\n":
+            index += 1
+        if index >= len(text):
+            yield text[lastindex:].replace("\n"," \\ ")
+        else:
+            yield text[lastindex:index + 1].replace("\n", " \\ ")
+        lastindex = index + 1
+
 def split_string(string, space): 
     res = []
     newstring = string
